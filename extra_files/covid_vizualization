@@ -1,0 +1,19 @@
+
+Componente Web Para Análise de Indicadores do Covid-19
+
+-> Situação Atual
+	-> Qual é a situação atual do Covid no que diz respeito ao número de Casos (ultimas 3 semanas | diminuição ou aumento ? | Muitos casos ou poucos nas ultimas semanas, Estabilidade do País); 
+	 
+
+
+
+-> Dados Históricos
+	-> Casos de Covid (Análise Histórica por País | Ranking dos Países com mais Casos); 
+	-> Mortes de Covid (Análise Histórica por País | Ranking de Países com mais Mortes); 
+
+
+
+-> Previsões (Contexto Académico) 
+	-> Prever se o número de casos irá aumentar na semana (Por País) (Mostrar um Mapa de cores que terá a vermelho os páises que vão aumentar e a verde os que vão diminuir);
+	-> Análise de qual modelo está a funcionar melhor;
+	-> Principais Influenciadores da Previsão (Explicabilidade); 

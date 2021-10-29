@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <!-- inport bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	<script src='https://cdn.plot.ly/plotly-2.0.0.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <title></title>
+  </head>
+
+  <body>
+
+<!-- import NavBar -->
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/#">Covid Platform</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/#/">Situação Atual</a>
+        <a class="nav-link" href="/select/history/">Análise Histórica</a>
+        <a class="nav-link active" aria-current="page" href="/mode/">Previsões</a>
+      </div>
+
+    </div>
+  </div>
+</nav>
+</div>
+<button type="button" id="button_1" class="btn btn-secondary" role="button" aria-pressed="true" >Previsões - {{p1}}</button>
+<button type="button" id="button_2" class="btn btn-secondary" role="button" aria-pressed="true" >Previsões - {{p2}}</button>
+<button type="button" id="button_3" class="btn btn-secondary" role="button" aria-pressed="true" >Previsões - {{p3}}</button>
+<button type="button" id="button_4" class="btn btn-secondary" role="button" aria-pressed="true" >Previsões - {{p4}}</button>
+<button type="button" id="button_5" class="btn btn-secondary" role="button" aria-pressed="true" >Previsões - {{p5}}</button>
+
+<div class="container">
+<div class="jumbotron jumbotron-fluid">
+
+  <div id = "p1" class="row">
+  <div class="col-md-auto">
+    <h1 class="display-4">{{p1}} - Previsões Novos Casos Casos</h1>
+  <canvas id="pred1" width="650" height="500"></canvas>
+  </div>
+
+<div id = "p2" class="col-md-auto">
+    <h1 class="display-4">{{p2}} - Previsões Novos Casos</h1>
+    <canvas id="pred2" width="650" height="500"></canvas>
+</div>
+
+  <div id = "p3" class="col-md-auto">
+    <h1 class="display-4">{{p3}} - Previsões Novos Casos</h1>
+    <canvas id="pred3" width="650" height="500"></canvas>
+  </div>
+
+
+  <div id = "p4" class="col-md-auto">
+    <h1 class="display-4">{{p4}} - Previsões Novos Casos</h1>
+    <canvas id="pred4" width="650" height="500"></canvas>
+  </div>
+
+  <div id = "p5" class="col-md-auto">
+    <h1 class="display-4">{{p5}} - Previsões Novos Casos</h1>
+    <canvas id="pred5" width="650" height="500"></canvas>
+  </div>
+
+</div>
+
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript">
+var ctx = document.getElementById('pred1');
+var mixedChart = new Chart(ctx, {
+type: 'linear',
+data: {
+    datasets: [{
+        type: 'line',
+        label: 'Número de Casos Reais',
+        data: {{datar_p1|safe}},
+        borderColor: '#fb906c',
+        backgroundColor: '#fb906c',
+    },{
+        type: 'line',
+        label: 'Previsões nos casos reais',
+        data: {{datat_p1|safe}},
+        borderColor: '#94bebf',
+        backgroundColor: '#94bebf',
+    },{
+        type: 'line',
+        label: 'Previsões Futuras',
+        data: {{datap_p1|safe}},
+        borderColor: '#617e98',
+        backgroundColor: '#617e98',
+    }],
+    labels: {{labels_p1|safe}},
+      },
+options: {
+scales: {
+  y: {
+    beginAtZero: true
+  }
+}
+}
+});
+</script>
+
+<script type="text/javascript">
+var ctx = document.getElementById('pred2');
+var mixedChart = new Chart(ctx, {
+type: 'linear',
+data: {
+    datasets: [{
+        type: 'line',
+        label: 'Número de Casos Reais',
+        data: {{datar_p2|safe}},
+        borderColor: '#fb906c',
+        backgroundColor: '#fb906c',
+    },{
+        type: 'line',
+        label: 'Previsões nos casos reais',
+        data: {{datat_p2|safe}},
+        borderColor: '#94bebf',
+        backgroundColor: '#94bebf',
+    },{
+        type: 'line',
+        label: 'Previsões Futuras',
+        data: {{datap_p2|safe}},
+        borderColor: '#617e98',
+        backgroundColor: '#617e98',
+    }],
+    labels: {{labels_p2|safe}},
+      },
+options: {
+scales: {
+  y: {
+    beginAtZero: true
+  }
+}
+}
+});
+</script>
+<script type="text/javascript">
+var ctx = document.getElementById('pred3');
+var mixedChart = new Chart(ctx, {
+type: 'linear',
+data: {
+    datasets: [{
+        type: 'line',
+        label: 'Número de Casos Reais',
+        data: {{datar_p3|safe}},
+        borderColor: '#fb906c',
+        backgroundColor: '#fb906c',
+    },{
+        type: 'line',
+        label: 'Previsões nos casos reais',
+        data: {{datat_p3|safe}},
+        borderColor: '#94bebf',
+        backgroundColor: '#94bebf',
+    },{
+        type: 'line',
+        label: 'Previsões Futuras',
+        data: {{datap_p3|safe}},
+        borderColor: '#617e98',
+        backgroundColor: '#617e98',
+    }],
+    labels: {{labels_p3|safe}},
+      },
+options: {
+scales: {
+  y: {
+    beginAtZero: true
+  }
+}
+}
+});
+</script>
+
+<script type="text/javascript">
+var ctx = document.getElementById('pred4');
+var mixedChart = new Chart(ctx, {
+type: 'linear',
+data: {
+    datasets: [{
+        type: 'line',
+        label: 'Número de Casos Reais',
+        data: {{datar_p4|safe}},
+        borderColor: '#fb906c',
+        backgroundColor: '#fb906c',
+    },{
+        type: 'line',
+        label: 'Previsões nos casos reais',
+        data: {{datat_p4|safe}},
+        borderColor: '#94bebf',
+        backgroundColor: '#94bebf',
+    },{
+        type: 'line',
+        label: 'Previsões Futuras',
+        data: {{datap_p4|safe}},
+        borderColor: '#617e98',
+        backgroundColor: '#617e98',
+    }],
+    labels: {{labels_p4|safe}},
+      },
+options: {
+scales: {
+  y: {
+    beginAtZero: true
+  }
+}
+}
+});
+</script>
+<script type="text/javascript">
+var ctx = document.getElementById('pred5');
+var mixedChart = new Chart(ctx, {
+type: 'linear',
+data: {
+    datasets: [{
+        type: 'line',
+        label: 'Número de Casos Reais',
+        data: {{datar_p5|safe}},
+        borderColor: '#fb906c',
+        backgroundColor: '#fb906c',
+    },{
+        type: 'line',
+        label: 'Previsões nos casos reais',
+        data: {{datat_p5|safe}},
+        borderColor: '#94bebf',
+        backgroundColor: '#94bebf',
+    },{
+        type: 'line',
+        label: 'Previsões Futuras',
+        data: {{datap_p5|safe}},
+        borderColor: '#617e98',
+        backgroundColor: '#617e98',
+    }],
+    labels: {{labels_p5|safe}},
+      },
+options: {
+scales: {
+  y: {
+    beginAtZero: true
+  }
+}
+}
+});
+</script>
+
+
+
+
+  <script type="text/javascript">
+  document.getElementById("button_1").onclick = function () {
+      window.location.hash = "#p1"
+      document.getElementById("button_1").disabled = true;
+      document.getElementById("button_2").disabled = false;
+      document.getElementById("button_3").disabled = false;
+      document.getElementById("button_4").disabled = false;
+      document.getElementById("button_5").disabled = false;
+  };
+  document.getElementById("button_2").onclick = function () {
+      window.location.hash = "#p2"
+      document.getElementById("button_1").disabled = false;
+      document.getElementById("button_2").disabled = true;
+      document.getElementById("button_3").disabled = false;
+      document.getElementById("button_4").disabled = false;
+      document.getElementById("button_5").disabled = false;
+  };
+  document.getElementById("button_3").onclick = function () {
+    window.location.hash = "#p3"
+    document.getElementById("button_1").disabled = false;
+    document.getElementById("button_2").disabled = false;
+    document.getElementById("button_3").disabled = true;
+    document.getElementById("button_4").disabled = false;
+    document.getElementById("button_5").disabled = false;
+
+  };
+  document.getElementById("button_4").onclick = function () {
+    window.location.hash = "#p4"
+    document.getElementById("button_1").disabled = false;
+    document.getElementById("button_2").disabled = false;
+    document.getElementById("button_3").disabled = false;
+    document.getElementById("button_4").disabled = true;
+    document.getElementById("button_5").disabled = false;
+
+  };
+  document.getElementById("button_5").onclick = function () {
+    window.location.hash = "#p5"
+    document.getElementById("button_1").disabled = false;
+    document.getElementById("button_2").disabled = false;
+    document.getElementById("button_3").disabled = false;
+    document.getElementById("button_4").disabled = false;
+    document.getElementById("button_5").disabled = true;
+
+
+  };
+  </script>
+
+  <style>
+
+     td{
+   text-align: center;
+  }
+  #dataTable {
+   font-family: Arial, Helvetica, sans-serif;
+   border-collapse: collapse;
+   width: 100%;
+   height: 10%;
+  }
+
+  #dataTable td, #dataTable th {
+   border: 5px solid #ddd;
+   padding: 1px;
+  }
+
+  #dataTable tr:nth-child(even){background-color: #e2e7e7;}
+
+  #dataTable tr:hover {background-color: #ddd;}
+
+  #dataTable th {
+   padding-top: 12px;
+   padding-bottom: 11px;
+   text-align: center;
+   background-color: #fb906c;
+   color: white;
+  }
+
+  #container_1 {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .table{
+
+  }
+
+  .anychart-tooltip {
+    background: #fff;
+    border: 1px solid #ccc;
+    max-width: 300px;
+    color: #545f69;
+  }
+  .box {
+    display: flex;
+    align-items: right;
+    justify-content: right;
+  }
+
+  .box {
+    width: 230px;
+    height: 100px;
+    float: right;
+  }
+
+  #button_1{
+    position: fixed;
+     top: 100px;
+  }
+  #button_2{
+    position: fixed;
+     top: 150px;
+  }
+
+  #button_3{
+    position: fixed;
+     top: 200px;
+  }
+
+  #button_4{
+    position: fixed;
+     top: 250px;
+  }
+
+  #button_5{
+    position: fixed;
+     top: 300px;
+  }
+
+
+  </style>
+
+
+    </body>
+</html>

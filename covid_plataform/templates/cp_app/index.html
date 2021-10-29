@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <!-- inport bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	<script src='https://cdn.plot.ly/plotly-2.0.0.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <title></title>
+  </head>
+
+  <body>
+
+<!-- import NavBar -->
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Covid Platform</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link active" aria-current="page" href="#">Situação Atual</a>
+        <a class="nav-link" href="/select/history/">Análise Histórica</a>
+        <a class="nav-link" href="/mode/">Previsões</a>
+      </div>
+
+    </div>
+  </div>
+</nav>
+</div>
+
+<button type="button" id="button_1" class="btn btn-secondary" role="button" aria-pressed="true" >Top 15 Países - Casos</button>
+<button type="button" id="button_2" class="btn btn-secondary" role="button" aria-pressed="true" >TOP 15 Países - Vacinação</button>
+<button type="button" id="button_3" class="btn btn-secondary" role="button" aria-pressed="true" >Análise dos Continentes</button>
+<button type="button" id="button_4" class="btn btn-secondary" role="button" aria-pressed="true" >Pior Ritmo na Vacinação</button>
+
+
+<div id = "recomend" class="box">
+  <div class="accordion" id="accordionExample">
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          <strong>Recomendações Países Seguros - Europa</strong>
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+        <ul>
+    {% for acc in recomendation_europe %}
+    <li>  <strong>{{ acc.country }}</strong>  </li>
+      <ul>
+        <li> Novos Casos : {{ acc.weekly_count }} </li>
+        <li> % Pop Vacinada : {{ acc.people_fully_vaccinated_per_hundred}} % </li>
+        <li> <a href="https://en.wikipedia.org/wiki/{{acc.country}}">wiki</a> </li>
+      </ul> <br>
+    {% endfor %}
+  </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          <strong>Recomendações Países Seguros - América</strong>
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <ul>
+      {% for acc in recomendation_america %}
+      <li>  <strong>{{ acc.country }}</strong>  </li>
+        <ul>
+          <li> Novos Casos : {{ acc.weekly_count }} </li>
+          <li> % Pop Vacinada : {{ acc.people_fully_vaccinated_per_hundred}} % </li>
+          <li> <a href="https://en.wikipedia.org/wiki/{{acc.country}}">wiki</a> </li>
+        </ul> <br>
+      {% endfor %}
+    </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          <strong>Recomendações Países Seguros - Asia</strong>
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <ul>
+      {% for acc in recomendation_asia %}
+      <li>  <strong>{{ acc.country }}</strong>   </li>
+        <ul>
+          <li> Novos Casos : {{ acc.weekly_count }} </li>
+          <li> % Pop Vacinada : {{ acc.people_fully_vaccinated_per_hundred}} % </li>
+          <li> <a href="https://en.wikipedia.org/wiki/{{acc.country}}">wiki</a> </li>
+        </ul> <br>
+      {% endfor %}
+    </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingFour">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+          <strong>Recomendações Países Seguros - Africa</strong>
+        </button>
+      </h2>
+      <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <ul>
+      {% for acc in recomendation_africa %}
+      <li>  <strong>{{ acc.country }}</strong>   </li>
+        <ul>
+          <li> Novos Casos : {{ acc.weekly_count }} </li>
+          <li> % Pop Vacinada : {{ acc.people_fully_vaccinated_per_hundred}} % </li>
+          <li> <a href="https://en.wikipedia.org/wiki/{{acc.country}}">wiki</a> </li>
+        </ul> <br>
+      {% endfor %}
+    </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingFive">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+          <strong>Recomendações Países Seguros - Oceania</strong>
+        </button>
+      </h2>
+      <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <ul>
+      {% for acc in recomendation_oceania %}
+      <li>  <strong>{{ acc.country }}</strong>   </li>
+        <ul>
+          <li> Novos Casos : {{ acc.weekly_count }} </li>
+          <li> % Pop Vacinada : {{ acc.people_fully_vaccinated_per_hundred}} % </li>
+          <li> <a href="https://en.wikipedia.org/wiki/{{acc.country}}">wiki</a> </li>
+        </ul> <br>
+      {% endfor %}
+    </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+
+<div class="container">
+<div class="jumbotron jumbotron-fluid">
+
+  <div id = "top15" class="row">
+  <div class="col-md-auto">
+    <h1 class="display-4">Top 15 Países com Mais Casos na Última Semana</h1>
+    <p class="lead">Esta tabela revela os top 15 países com mais casos de covid na última semana. Apresenta também a taxa de óbitos pelo número de novos casos.</p>
+    <table class="table" id="dataTable">
+    <thead>
+      <th>Países</th>
+      <th>Número de Novos Casos</th>
+      <th>População Total</th>
+      <th>Número de Novas Mortes</th>
+      <th>Taxa de Morte / Número de Novos Casos</th>
+    </thead>
+          {% for acc in index_id %}
+          <tr>
+            <td>{{ acc.country }}</td>
+            <td>{{ acc.weekly_count }}</td>
+            <td>{{ acc.population }}</td>
+            <td>{{ acc.weekly_count_deaths }}</td>
+            <td>{{ acc.tax_deaths }}</td>
+          </tr>
+          {% endfor %}
+  </table>
+  <canvas id="chart_top_15" width="1300" height="300" ></canvas>
+  </div>
+
+<div id = "vacinacao" class="col-md-auto">
+    <h1 class="display-4">Top 15 Países com Maior Taxa de População Vacinada</h1>
+    <p class="lead">Neste gráfico é apresentado a taxa de população vacinada e os números de novos casos nos 15 países com maior taxa de população vacinada.</p>
+    <canvas id="vacination" width=650 height=400></canvas>
+</div>
+
+  <div id = "continentes" class="col-md-auto">
+    <h1 class="display-4">Novos Casos - Continentes</h1>
+    <p class="lead">Número de novos casos por cada continente.</p>
+    <canvas id="pie-chart" width=500 height=300 responsive = false maintainAspectRatio= false></canvas>
+  </div>
+
+
+  <div id = "d_vacination" class="col-md-auto">
+    <h1 class="display-4">Países com Pior Ritmo de Vacinação</h1>
+    <p class="lead">Lista dos Top 15 Países com pior ritmo de vacinação para atingir a imunidade de grupo.</p>
+    <canvas id="danger_vacination" width="650" height="500"></canvas>
+  </div>
+
+</div>
+
+
+</div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    var ctx = document.getElementById('chart_top_15');
+    var mixedChart = new Chart(ctx, {
+    type: 'scatter',
+    data: {
+        datasets: [{
+            type: 'bar',
+            label: 'Número de Novos Casos',
+            data: {{data_1|safe}},
+            borderColor: '#e2e7e7',
+            backgroundColor: '#fb906c',
+            borderWidth: 0,
+            segmentStrokeWidth: 0,
+        }],
+        labels: {{labels_1|safe}},
+          },
+    options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+</script>
+
+<script type="text/javascript">
+var ctx = document.getElementById('vacination');
+var mixedChart = new Chart(ctx, {
+
+  data: {
+    labels: {{labels_3|safe}},
+    datasets: [{
+      type: 'bar',
+      label: '% População Vacinada',
+      yAxisID: 'A',
+      data: {{data_3|safe}},
+      borderColor: '#617e98',
+      borderWidth: 1
+
+    }, {
+      type: 'line',
+      label: 'Número de Novos Casos',
+      yAxisID: 'B',
+      data: {{data_31|safe}},
+      borderColor: '#fb906c',
+      backgroundColor: '#fb906c',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        id: 'A',
+        type: 'linear',
+        position: 'left',
+      }, {
+        id: 'B',
+        type: 'linear',
+        position: 'right',
+      }]
+    }
+  }
+});
+</script>
+
+<script type="text/javascript">
+var ctx = document.getElementById("pie-chart").getContext('2d');;
+new Chart(ctx, {
+  type: 'pie',
+  exportEnabled: true,
+  data: {
+    labels:{{labels_2|safe}} ,
+    datasets: [{
+      label: "Número de Novos Casos",
+      backgroundColor: ["#617e98", "#6d97a7","#94bebf","#e2e7e7","#fb906c"],
+      data: {{data_2|safe}}
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Predicted world population (millions) in 2050'
+    },
+    legend: {
+    position: 'bottom',
+    display: true,
+
+}
+  }
+});
+</script>
+
+<script type="text/javascript">
+var ctx = document.getElementById('danger_vacination');
+var mixedChart = new Chart(ctx, {
+
+  data: {
+    labels: {{labels_4|safe}},
+    datasets: [{
+      type: 'bar',
+      label: 'Número de Dias para a Imunidade de Grupo',
+      yAxisID: 'A',
+      data: {{data_4|safe}},
+      borderColor: '#94bebf',
+      borderWidth: 1
+
+    }, {
+      type: 'line',
+      label: 'Número de Novos Casos',
+      yAxisID: 'B',
+      data: {{data_41|safe}},
+      borderColor: '#617e98',
+      backgroundColor: '#617e98',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        id: 'A',
+        type: 'linear',
+        position: 'left',
+        gridLines: {
+                drawOnChartArea: false
+            }
+      }, {
+        id: 'B',
+        type: 'linear',
+        position: 'right',
+      }]
+    }
+  }
+});
+</script>
+
+
+
+<script type="text/javascript">
+document.getElementById("button_1").onclick = function () {
+    window.location.hash = "#top15"
+    document.getElementById("button_1").disabled = true;
+    document.getElementById("button_2").disabled = false;
+    document.getElementById("button_3").disabled = false;
+    document.getElementById("button_4").disabled = false;
+};
+document.getElementById("button_2").onclick = function () {
+    window.location.hash = "#vacinacao"
+    document.getElementById("button_1").disabled = false;
+    document.getElementById("button_2").disabled = true;
+    document.getElementById("button_3").disabled = false;
+    document.getElementById("button_4").disabled = false;
+};
+document.getElementById("button_3").onclick = function () {
+  window.location.hash = "#continentes"
+  document.getElementById("button_1").disabled = false;
+  document.getElementById("button_2").disabled = false;
+  document.getElementById("button_3").disabled = true;
+  document.getElementById("button_4").disabled = false;
+
+
+};
+document.getElementById("button_4").onclick = function () {
+  window.location.hash = "#d_vacination"
+  document.getElementById("button_1").disabled = false;
+  document.getElementById("button_2").disabled = false;
+  document.getElementById("button_3").disabled = false;
+  document.getElementById("button_4").disabled = true;
+
+
+};
+</script>
+
+
+<style>
+
+   td{
+ text-align: center;
+}
+#dataTable {
+ font-family: Arial, Helvetica, sans-serif;
+ border-collapse: collapse;
+ width: 100%;
+ height: 10%;
+}
+
+#dataTable td, #dataTable th {
+ border: 5px solid #ddd;
+ padding: 1px;
+}
+
+#dataTable tr:nth-child(even){background-color: #e2e7e7;}
+
+#dataTable tr:hover {background-color: #ddd;}
+
+#dataTable th {
+ padding-top: 12px;
+ padding-bottom: 11px;
+ text-align: center;
+ background-color: #fb906c;
+ color: white;
+}
+
+#container_1 {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.table{
+
+}
+
+.anychart-tooltip {
+  background: #fff;
+  border: 1px solid #ccc;
+  max-width: 300px;
+  color: #545f69;
+}
+.box {
+  display: flex;
+  align-items: right;
+  justify-content: right;
+}
+
+.box {
+  width: 230px;
+  height: 100px;
+  float: right;
+}
+
+#button_1{
+  position: fixed;
+   top: 100px;
+}
+#button_2{
+  position: fixed;
+   top: 150px;
+}
+
+#button_3{
+  position: fixed;
+   top: 200px;
+}
+
+#button_4{
+  position: fixed;
+   top: 250px;
+}
+
+
+</style>
+
+</body>
+</html>

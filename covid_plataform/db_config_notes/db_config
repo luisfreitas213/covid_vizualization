@@ -1,0 +1,18 @@
+create schema if not exists covid_plataform;
+
+
+create table if not exists covid_plataform.results_lstm_model(
+   data timestamp DEFAULT now(),
+   country varchar(50),
+   n_steps int,
+   units int,
+   layers int,
+   drops float,
+   epochs int,
+   batch_size int,
+   optimizer varchar(50),
+   dim_test int,
+   result_train float,
+   result_test float
+
+)

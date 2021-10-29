@@ -1,0 +1,24 @@
+Apresentação:
+
+Visualização.
+
+Breve Introdução
+
+Estado da Arte
+
+Arquitetura
+	-Como funciona.
+	
+Mockups
+	- Df_model
+		(slide Cnn)
+		(slide Lstm
+		(slide recomendação)
+	- Visualization
+
+Caminho a Seguir
+
+-acrescentar vacinação
+-acrescentar metricas
+
+reuniao quinta as 18H30

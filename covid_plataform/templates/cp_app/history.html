@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <!-- inport bootstrap -->
+    <<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  	<script src='https://cdn.plot.ly/plotly-2.0.0.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+    <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src='https://cdn.plot.ly/plotly-2.0.0.min.js'></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <title></title>
+
+  </head>
+
+  <body>
+
+<!-- import NavBar -->
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/#">Covid Platform</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/#">Situação Atual</a>
+        <a class="nav-link active" aria-current="page" href="/select/history/">Análise Histórica</a>
+        <a class="nav-link" href="/mode/">Previsões</a>
+      </div>
+
+    </div>
+  </div>
+</nav>
+</div>
+
+
+<div class="container">
+<form method='GET' action='http://127.0.0.1:8000/history/'>
+  Country:
+  <select data-placeholder="Begin typing a name to filter..." multiple class="chosen-select" name="country_selection">
+    <option value=""></option>
+    {% for c in country_list %}
+        <option type="radio" value='{{c}}'> {{c}} </option>
+      {% endfor %}
+  </select>
+
+  Dates:
+  <input type="text" name="daterange" value="{{first_date}} - {{last_date}}" />
+  <input type="submit">
+</form>
+
+<script>
+  $(function() {
+    $('input[name="daterange"]').daterangepicker({
+      opens: 'left'
+    }, function(start, end, label) {
+      console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    });
+  });
+</script>
+</div>
+{% load extra_tags %}
+{% for c in country_graph_list %}
+<div class="container">
+<div class="jumbotron jumbotron-fluid">
+  <div id = "evolucao_geral_{{c}}" class="row">
+  <div class="col-md-auto">
+    <h1 class="display-4">{{c}}: Situação Atual do Covid</h1>
+    <p class="lead">Métricas atuais do país em termos de números de casos e mortes e vacinacao </p>
+    <table class="table" id="dataTable">
+      <thead>
+        <th>Número Médio de Novos Casos Semanais</th>
+        <th>Número Médio Mortes Semanais</th>
+        <th>Taxa de Morte Média</th>
+        <th>Vacinação Máxima no Período de Tempo</th>
+        <th>Vacinação Completa Máxima no Período de Tempo</th>
+      </thead>
+      {% for key, value in table_dic.items %}
+        {% ifequal key c %}
+          <tr>
+          {% for i_key, i_value in value.items %}
+            <td> {{i_value}} </td>
+          {% endfor %}
+          </tr>
+          {% endifequal %}
+          {% endfor %}
+    </table>
+    <canvas id="table_{{c}}" width="1300" height="50" ></canvas>
+  </div>
+  </div>
+{% endfor %}
+
+
+<div id = "Comparacao_geral" class="col-md-auto">
+  <h1 class="display-4">Comparação entre países: Evolução Temporal da Doença</h1>
+  <p class="lead">Descrição e análise temporal do impacto do covid tendo em conta o número de casos e número de mortes </p>
+  <<canvas id="timeSeriesChart" width="850" height="400"></canvas>
+</div>
+
+<div id = "Comparacao_vacinas" class="col-md-auto">
+  <h1 class="display-4">Comparação entre países: Evolução Temporal da População Vacinada</h1>
+  <p class="lead">Descrição e análise temporal do impacto do covid tendo em conta o número de pessoas vacinadas</p>
+  <canvas id="vacination" width=850 height=400></canvas>
+</div>
+
+<!-- import NavBar
+  <div class="col-md-auto">
+    <h1 class="display-4">Fluid jumbotron</h1>
+    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+    <canvas id="chart_top_16" width="1400" height="500"></canvas>
+  </div>
+-->
+</div>
+
+
+</div>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript">
+
+var datasets_values = []
+count = 0
+var PALETTE = ['#fb906c', '#e2e7e7', '#94bebf', '##6d97a7', '##617e98' ]
+{% for key, value in dictListas.items %}
+      datasets_values[count] = {
+        type: 'line',
+        label: "Data" + String(count),
+        data: {{value}},
+        borderColor: PALETTE[count],
+        backgroundColor: PALETTE[count]
+      }
+      count +=1
+{% endfor %}
+var ctx = document.getElementById('timeSeriesChart');
+var mixedChart = new Chart(ctx, {
+type: 'linear',
+
+data: {
+    datasets: datasets_values,
+    labels: {{labels_serie|safe}},
+      },
+options: {
+scales: {
+  y: {
+    beginAtZero: true
+  }
+}
+}
+});
+
+</script>
+
+<script type="text/javascript">
+
+  var datasets_values = []
+  count = 0
+  var PALETTE = ['#fb906c', '#e2e7e7', '#94bebf', '##6d97a7', '##617e98' ]
+  {% for key, value in dictListas_vac.items %}
+        datasets_values[count] = {
+          type: 'line',
+          label: "Data" + String(count),
+          data: {{value|safe}},
+          borderColor: PALETTE[count],
+          backgroundColor: PALETTE[count]
+        }
+        count +=1
+  {% endfor %}
+  var ctx = document.getElementById('vacination');
+  var mixedChart = new Chart(ctx, {
+  type: 'linear',
+
+  data: {
+      datasets: datasets_values,
+      labels: {{labels_serie|safe}},
+        },
+  options: {
+  scales: {
+    y: {
+      beginAtZero: true
+    }
+  }
+  }
+  });
+
+  </script>
+
+<script type="text/javascript">
+document.getElementById("button_1").onclick = function () {
+    window.location.hash = "#evolucao_geral"
+    document.getElementById("button_1").disabled = true;
+    document.getElementById("button_2").disabled = false;
+    document.getElementById("button_3").disabled = false;
+};
+document.getElementById("button_2").onclick = function () {
+    window.location.hash = "#Comparacao_geral"
+    document.getElementById("button_1").disabled = false;
+    document.getElementById("button_2").disabled = true;
+    document.getElementById("button_3").disabled = false;
+};
+</script>
+
+
+<style>
+
+   td{
+ text-align: center;
+}
+#dataTable {
+ font-family: Arial, Helvetica, sans-serif;
+ border-collapse: collapse;
+ width: 100%;
+ height: 10%;
+}
+
+#dataTable td, #dataTable th {
+ border: 5px solid #ddd;
+ padding: 1px;
+}
+
+#dataTable tr:nth-child(even){background-color: #e2e7e7;}
+
+#dataTable tr:hover {background-color: #ddd;}
+
+#dataTable th {
+ padding-top: 12px;
+ padding-bottom: 11px;
+ text-align: center;
+ background-color: #fb906c;
+ color: white;
+}
+
+#container_1 {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.anychart-tooltip {
+  background: #fff;
+  border: 1px solid #ccc;
+  max-width: 300px;
+  color: #545f69;
+}
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+#button_1{
+  position: fixed;
+   top: 100px;
+}
+#button_2{
+  position: fixed;
+   top: 150px;
+}
+
+#button_3{
+  position: fixed;
+   top: 200px;
+}
+
+
+</style>
+
+</body>
+</html>
